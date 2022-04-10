@@ -1,6 +1,7 @@
 import Vue from 'vue'
 
 import '../imports/ui/plugins'
+//import '@mdi/font/css/materialdesignicons.css'
 
 import Vuetify  from 'vuetify';
 Vue.use(Vuetify);
@@ -16,7 +17,8 @@ getUserLanguage = function () {
 }
 
 // for Vuetify 2.x you also need:
-const vuetify = new Vuetify({});
+const vuetify = new Vuetify({
+});
 
 Meteor.startup(() => {
   new Vue({
