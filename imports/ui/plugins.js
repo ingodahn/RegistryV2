@@ -4,3 +4,4 @@ import VueMeteorTracker from 'vue-meteor-tracker'
 Vue.use(VueMeteorTracker)
 
 
+

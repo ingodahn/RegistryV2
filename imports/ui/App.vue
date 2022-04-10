@@ -21,7 +21,8 @@ export default {
   data () {
     return {
       session: {
-        
+        searchTerm: '',
+        searchType: 'allTypes',
       }
     }
   }
