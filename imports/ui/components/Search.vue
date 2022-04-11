@@ -1,12 +1,12 @@
 <template>
   <div>
-    <h2>Search Template</h2>
     <v-form>
       <v-row>
         <v-col cols="12" sm="6">
           <v-text-field
             v-model="session.searchTerm"
             label="Suche nach..."
+            clearable
           ></v-text-field>
         </v-col>
         <v-col cols="12" sm="6">
