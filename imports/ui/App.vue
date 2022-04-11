@@ -83,6 +83,11 @@ export default {
       }
       return false;
     },
+    $subscribe: {
+      'Items': [],
+      'Users': [],
+      'AllItems': []
+    },
   },
 };
 </script>

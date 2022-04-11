@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Admin Tools</h1>
     <v-row>
       <v-col>
         <v-card width="600" height="300" raised>

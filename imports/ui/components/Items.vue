@@ -22,7 +22,7 @@
                     <v-list-item-title v-text="item.Title"></v-list-item-title>
                   </a>
                   <v-list-item-subtitle
-                    v-text="item.Description"
+                    v-text="item.Description" :class="item.Status"
                   ></v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
@@ -50,6 +50,7 @@ export default {
       if (searchType == "allTypes" && searchTerm.length < 3) {
         return [];
       }
+      
       let pattern = {
         $or: [
           { Title: { $regex: searchTerm, $options: "i" } },
@@ -58,6 +59,9 @@ export default {
       };
       if (searchType != "allTypes") pattern.itemType = searchType;
       return Items.find(pattern).fetch();
+    },
+    somethingFound() {
+      return this.itemsFound.length > 0;
     },
   },
   methods: {
@@ -89,12 +93,16 @@ export default {
         this.session.searchTerm.length < 3
       );
     },
-    somethingFound() {
-      return this.itemsFound.length > 0;
-    },
+    
   },
 };
 </script>
 
 <style scoped>
+.deprecated {
+  background-color: #f44336;
+}
+.private {
+  background-color: #ff9800;
+}
 </style>
