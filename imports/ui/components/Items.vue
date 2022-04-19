@@ -82,8 +82,13 @@ export default {
       }
     },
     showItemDetails(item) {
-      this.session.mode = "itemDetail";
-      this.session.currentItem = item;
+      if (Meteor.userId == item.userId || this.isAdmin) {
+        this.session.mode = "itemEdit";
+        this.session.currentItem = item;
+      } else {
+        this.session.mode = "itemDetail";
+        this.session.currentItem = item;
+      }
     },
   },
   computed: {
@@ -93,7 +98,19 @@ export default {
         this.session.searchTerm.length < 3
       );
     },
-    
+    isAdmin: function() {
+        if (! Meteor.userId()) {
+            return false;
+        }
+        let user=Meteor.users.findOne({_id: Meteor.userId()});
+        if (! user) {
+            return false;
+        }
+        if (user.username == 'admin') {
+            return true;
+        }
+        return false;
+    },
   },
 };
 </script>
