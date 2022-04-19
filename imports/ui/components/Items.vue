@@ -3,7 +3,7 @@
     <p v-if="threeLetters">Geben Sie wenigstens 3 Buchstaben ein.</p>
     <v-form v-else-if="somethingFound">
       <v-row>
-        <v-col cols="12" sm="6">
+        <v-col >
           <v-list three-line>
             <v-list-item-group>
               <v-list-item
@@ -58,7 +58,7 @@ export default {
         ],
       };
       if (searchType != "allTypes") pattern.itemType = searchType;
-      return Items.find(pattern).fetch();
+      return Items.find(pattern, {sort: {last_modified: -1}}).fetch();
     },
     somethingFound() {
       return this.itemsFound.length > 0;

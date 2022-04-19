@@ -16,6 +16,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
+            <v-btn color="primary" @click="session.mode='search'">Zurück</v-btn>
             <v-btn right @click="restoreData">Daten ersetzen</v-btn>
           </v-card-actions>
         </v-card>
@@ -30,6 +31,7 @@ import { Items } from "../../api/collections/ItemsCollection";
 export default {
   data() {
     return {
+      session: this.$root.$data.session,
       sessionFile: null,
     };
   },

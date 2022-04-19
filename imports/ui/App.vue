@@ -5,8 +5,17 @@
         <v-row>
           <h1 class="my-2">Mathematik interaktiv</h1>
         </v-row>
-        <v-row>
-          <admin v-if="isAdmin" />
+        <v-row v-if="isAdmin">
+          <v-btn color="warning" @click="session.mode = 'replaceDatabase'"
+            >Datenbank ersetzen</v-btn
+          >
+          <admin v-if="session.mode == 'replaceDatabase'"></admin>
+          <v-btn
+            v-if="session.mode == 'search' && session.searchType != 'allTypes'"
+            color="primary"
+            @click="newItem"
+            >Neuer Eintrag</v-btn
+          >
         </v-row>
         <div v-if="session.mode == 'search'">
           <v-row>
@@ -75,7 +84,37 @@ export default {
   methods: {
     logout() {
       Meteor.logout();
-      this.$root.$data.session.mode = "search";
+      this.session.mode = "search";
+    },
+    newItem() {
+      this.session.currentItem = {
+        Title: "",
+        Description: "",
+        URL: "https://",
+        license: "CC-BY-SA",
+        Status: "public",
+        itemType: this.session.searchType,
+        //owner: this.currentUser._id,
+        owner: "6mYpk6vXoocKmmwxH",
+        lastModified: new Date(),
+      };
+      switch (this.session.searchType) {
+        case "scripts": {
+          this.session.currentItem.author = "Ingo Dahn";
+          this.session.currentItem.language = "de";
+          break;
+        }
+        case "sagecell": {
+          this.session.currentItem.documentation = "";
+          this.session.currentItem.language = "de";
+          break;
+        }
+        case "mathcoach": {
+          this.session.currentItem.lti = "no";
+          break;
+        }
+      }
+      this.$root.$data.session.mode = "itemEdit";
     },
   },
   meteor: {
@@ -89,9 +128,9 @@ export default {
       return false;
     },
     $subscribe: {
-      'Items': [],
-      'Users': [],
-      'AllItems': []
+      Items: [],
+      Users: [],
+      AllItems: [],
     },
   },
 };

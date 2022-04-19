@@ -3,37 +3,32 @@ import { Items } from '../collections/ItemsCollection';
 
 Meteor.methods({
     insertItem(item) {
-        /*
         if (!this.userId) {
             throw new Meteor.Error('Insert not authorized');
         }
-        
-        const pattern = Match.ObjectIncluding({ type: Match.OneOf("relation","concept","subject","note","theorem","person")});
-        var myTest=Match.test(item,pattern);
+        const pattern = Match.ObjectIncluding({ itemType: Match.OneOf("scripts", "sagecell", "mathcoach") });
+        var myTest = Match.test(item, pattern);
         if (myTest) {
-            */
-            var newId=Items.insert(item);
+            var newId = Items.insert(item);
             return newId;
-            /*
         } else {
             console.log("Insert: Illegal Pattern");
         }
-        */
     },
     updateItem(item) {
         if (!this.userId) {
             throw new Meteor.Error('Update not authorized');
         }
-        const pattern = Match.ObjectIncluding({ 
-            _id: String, 
-            itemType: Match.OneOf("scripts","sagecell","mathcoach")
+        const pattern = Match.ObjectIncluding({
+            _id: String,
+            itemType: Match.OneOf("scripts", "sagecell", "mathcoach")
         });
-        var myTest=Match.test(item,pattern);
+        var myTest = Match.test(item, pattern);
         if (myTest) {
             Items.update(
-                {_id: item._id},
+                { _id: item._id },
                 {
-                $set: item
+                    $set: item
                 }
             );
         } else {
@@ -41,7 +36,7 @@ Meteor.methods({
         }
     },
     deleteItem(pattern) {
-        if (! pattern instanceof Object) {
+        if (!pattern instanceof Object) {
             throw new Meteor.Error('Delete: Pattern is not an object');
         }
         if (!this.userId) {
