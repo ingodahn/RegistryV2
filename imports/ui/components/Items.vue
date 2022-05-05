@@ -1,7 +1,6 @@
 <template>
   <div>
-    <p v-if="threeLetters">Geben Sie wenigstens 3 Buchstaben ein.</p>
-    <v-form v-else-if="somethingFound">
+    <v-form v-if="somethingFound">
       <v-row>
         <v-col >
           <v-list three-line>
@@ -92,12 +91,6 @@ export default {
     },
   },
   computed: {
-    threeLetters() {
-      return (
-        this.session.searchType == "allTypes" &&
-        this.session.searchTerm.length < 3
-      );
-    },
     isAdmin: function() {
         if (! Meteor.userId()) {
             return false;

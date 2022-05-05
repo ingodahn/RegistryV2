@@ -2,8 +2,8 @@
   <v-app>
     <v-main>
       <v-container class="py-5">
-        <v-row>
-          <h1 class="my-2">Mathematik interaktiv</h1>
+        <v-row justify="center">
+          <h1 class="my-2">Mathematik interaktiv <img src="/images/IDlogo.png" height="40px"/></h1>
         </v-row>
         <v-row v-if="isAdmin">
           <v-btn color="warning" @click="session.mode = 'replaceDatabase'"
@@ -18,17 +18,17 @@
           >
         </v-row>
         <div v-if="session.mode == 'search'">
-          <v-row>
+          <v-row justify="center">
             <search />
           </v-row>
           <v-row>
-            <items />
+            <items v-if = "!threeLetters"/>
           </v-row>
         </div>
-        <v-row v-if="session.mode == 'itemDetail'">
+        <v-row v-if="session.mode == 'itemDetail'" justify="center">
           <item-details :currentItem="session.currentItem" />
         </v-row>
-        <v-row v-if="session.mode == 'itemEdit'">
+        <v-row v-if="session.mode == 'itemEdit'" justify="center">
           <item-edit :currentItem="session.currentItem" />
         </v-row>
         <v-row v-if="session.mode == 'login'">
@@ -115,6 +115,14 @@ export default {
         }
       }
       this.$root.$data.session.mode = "itemEdit";
+    },
+  },
+  computed: {
+    threeLetters() {
+      return (
+        this.session.searchType == "allTypes" &&
+        this.session.searchTerm.length < 3
+      );
     },
   },
   meteor: {

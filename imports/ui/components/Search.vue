@@ -6,6 +6,7 @@
           <v-text-field
             v-model="session.searchTerm"
             label="Suche nach..."
+            :placeholder="searchPlaceholder"
             clearable
           ></v-text-field>
         </v-col>
@@ -32,6 +33,11 @@ export default {
   methods: {
     
   },
+  computed: {
+    searchPlaceholder() {
+      return this.session.searchType == 'allTypes' ? "Geben Sie wenigstens 3 Buchstaben ein." : "";
+    }
+  }
 }
 </script>
 
