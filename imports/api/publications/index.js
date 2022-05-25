@@ -57,7 +57,7 @@ Meteor.publish("Items", function(searchTerm, searchType) {
         return Items.find({$and: [pattern, {'Status':'public'}]},{fields: {}});
     }
   });
-
+*/
     Meteor.publish("AllItems", function() {
         var current_user_role='none';
         // var itemType='mathcoach';
@@ -90,7 +90,7 @@ Meteor.publish("Items", function(searchTerm, searchType) {
                 );
         }
     });
-
+/*
   Meteor.publish("Users", function() {
     var userDetails = Meteor.users.find(
       {},{fields: {_id: 1, username: 1}}

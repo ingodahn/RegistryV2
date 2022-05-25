@@ -6,10 +6,10 @@
           <h1 class="my-2">Mathematik interaktiv <img src="/images/IDlogo.png" height="40px"/></h1>
         </v-row>
         <v-row v-if="isAdmin">
-          <v-btn color="warning" @click="session.mode = 'replaceDatabase'"
-            >Datenbank ersetzen</v-btn
+          <v-btn v-if="session.mode != 'admin'"  color="warning" @click="session.mode = 'admin'"
+            >Admin Interface</v-btn
           >
-          <admin v-if="session.mode == 'replaceDatabase'"></admin>
+          <admin v-if="session.mode == 'admin'"></admin>
           <v-btn
             v-if="session.mode == 'search' && session.searchType != 'allTypes'"
             color="primary"

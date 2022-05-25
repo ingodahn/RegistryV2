@@ -1,6 +1,11 @@
 <template>
   <div>
     <v-row>
+      <v-btn color="primary" class="mx-1 my-1" @click="session.mode='search'">Back</v-btn>
+      <v-btn color="primary" class="mx-1 my-1" @click="backupAll">Backup Data</v-btn>
+      <v-btn color="primary" class="mx-1 my-1" @click="adminMode='restoreData'">Restore Data</v-btn>
+    </v-row>
+    <v-row v-if="adminMode == 'restoreData'">
       <v-col>
         <v-card width="600" height="300" raised>
           <v-card-title>Load data from file:</v-card-title>
@@ -14,9 +19,10 @@
             >
             </v-file-input>
           </v-card-text>
+          
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" @click="session.mode='search'">Zurück</v-btn>
+            
             <v-btn right @click="restoreData">Daten ersetzen</v-btn>
           </v-card-actions>
         </v-card>
@@ -28,11 +34,13 @@
 <script>
 import Vue from "vue";
 import { Items } from "../../api/collections/ItemsCollection";
+import { saveAs } from "file-saver";
 export default {
   data() {
     return {
       session: this.$root.$data.session,
       sessionFile: null,
+      adminMode: 'none',
     };
   },
   methods: {
@@ -72,6 +80,18 @@ export default {
           " items done"
       );
       console.log("Found "+this.allItems.length);
+    },
+     backupAll () {
+        var backupItems=this.allItems;
+        const backupData = {
+          items: backupItems,
+          date: new Date()
+        };
+        console.log(backupData);
+        let backupString = JSON.stringify(backupData,null,"\t");
+        var blob=new Blob([backupString],{type: "text/plain;charset=utf-8"});
+        saveAs(blob,"backup.json");
+        console.log('Backup done');
     },
   },
   meteor: {
