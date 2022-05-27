@@ -3,6 +3,8 @@ import { Accounts } from 'meteor/accounts-base';
 import '../imports/api/collections';
 import '../imports/api/publications';
 import '/imports/api/methods/ItemsMethods';
+import '/imports/api/methods/UserMethods';
+
 
 const SEED_USERNAME = 'admin';
 const SEED_PASSWORD = 'admin';

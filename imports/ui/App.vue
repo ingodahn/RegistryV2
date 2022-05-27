@@ -6,12 +6,14 @@
           <h1 class="my-2">Mathematik interaktiv <img src="/images/IDlogo.png" height="40px"/></h1>
         </v-row>
         <v-row v-if="isAdmin">
-          <v-btn v-if="session.mode != 'admin'"  color="warning" @click="session.mode = 'admin'"
+          <v-btn class="my-2" v-if="session.mode != 'admin'"  color="warning" @click="session.mode = 'admin'"
             >Admin Interface</v-btn
           >
           <admin v-if="session.mode == 'admin'"></admin>
+        </v-row>
+        <v-row>
           <v-btn
-            v-if="session.mode == 'search' && session.searchType != 'allTypes'"
+            v-if="currentUser && session.mode == 'search' && session.searchType != 'allTypes'"
             color="primary"
             @click="newItem"
             >Neuer Eintrag</v-btn
@@ -45,7 +47,7 @@
       >
       &nbsp;
       <v-btn color="primary" @click="logout" v-if="currentUser"
-        >Als Autor abmelden</v-btn
+        >Als {{ currentUser.username }} abmelden</v-btn
       >
       <v-btn color="primary" @click="session.mode = 'login'" v-else
         >Als Autor anmelden</v-btn
@@ -95,7 +97,7 @@ export default {
         Status: "public",
         itemType: this.session.searchType,
         //owner: this.currentUser._id,
-        owner: "6mYpk6vXoocKmmwxH",
+        owner: this.currentUser.username,
         lastModified: new Date(),
       };
       switch (this.session.searchType) {

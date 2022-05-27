@@ -5,7 +5,7 @@
       <p>{{ currentItem.Description }}</p>
       <p>
         <b>URL:</b>
-        <a href="currentItem.URL" target="_blank">{{ currentItem.URL }}</a>
+        <a :href="currentItem.URL" target="_blank">{{ currentItem.URL }}</a>
       </p>
 
       <div v-if="currentItem.itemType == 'scripts'">
@@ -13,7 +13,7 @@
           <p><b>Sprache:</b> {{ currentItem.language }}</p>
       </div>
       <div v-if="currentItem.itemType == 'sagecell'">
-          <p><b>Dokumentation:</b><p>
+          <p><b>Dokumentation:</b></p>
               <p><pre>{{ currentItem.documentation }}</pre></p>
               <p><b>Sprache:</b> {{ currentItem.language }}</p>
       </div>
@@ -47,16 +47,15 @@ export default {
   methods: {},
   computed: {
     getOwner() {
-      switch (this.currentItem.owner) {
-        case "6mYpk6vXoocKmmwxH":
-          return "Ingo Dahn";
-        case "RnawNjw4T2eYaFcAi":
-          return "MathCoach-Team";
-        case "yhc4GHyXccvf5g3E9":
-          return "Wigand Rathmann";
-        default:
-          return "Unbekannt";
-      }
+      let owner = this.currentItem.owner;
+      return this.userNames[owner] ? this.userNames[owner] : "Unbekannt";
+    },
+    userNames () {
+      let un = {}
+      Meteor.users.find({}).fetch().forEach(element => {
+        un[element.username] = element.name;
+      });
+      return un;
     },
     getType() {
       switch (this.currentItem.itemType) {

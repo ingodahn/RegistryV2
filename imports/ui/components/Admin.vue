@@ -3,7 +3,8 @@
     <v-row>
       <v-btn color="primary" class="mx-1 my-1" @click="session.mode='search'">Back</v-btn>
       <v-btn color="primary" class="mx-1 my-1" @click="backupAll">Backup Data</v-btn>
-      <v-btn color="primary" class="mx-1 my-1" @click="adminMode='restoreData'">Restore Data</v-btn>
+      <v-btn color="warning" class="mx-1 my-1" @click="adminMode='restoreData'">Restore Data</v-btn>
+      <v-btn color="primary" class="mx-1 my-1" @click="adminMode='users'">User Management</v-btn>
     </v-row>
     <v-row v-if="adminMode == 'restoreData'">
       <v-col>
@@ -28,13 +29,15 @@
         </v-card>
       </v-col>
     </v-row>
+    <user-management v-if="adminMode == 'users'"></user-management>
   </div>
 </template>
 
 <script>
-import Vue from "vue";
+//import Vue from "vue";
 import { Items } from "../../api/collections/ItemsCollection";
 import { saveAs } from "file-saver";
+import userManagement from "./UserManagement.vue";
 export default {
   data() {
     return {
@@ -42,6 +45,9 @@ export default {
       sessionFile: null,
       adminMode: 'none',
     };
+  },
+  components: {
+    userManagement,
   },
   methods: {
     restoreData() {
@@ -79,24 +85,26 @@ export default {
           data.items.length +
           " items done"
       );
-      console.log("Found "+this.allItems.length);
     },
      backupAll () {
         var backupItems=this.allItems;
+        var backupUsers=this.allUsers;
         const backupData = {
           items: backupItems,
+          users: backupUsers,
           date: new Date()
         };
-        console.log(backupData);
         let backupString = JSON.stringify(backupData,null,"\t");
         var blob=new Blob([backupString],{type: "text/plain;charset=utf-8"});
         saveAs(blob,"backup.json");
-        console.log('Backup done');
     },
   },
   meteor: {
     allItems() {
       return Items.find({}).fetch();
+    },
+    allUsers() {
+      return Meteor.users.find({}).fetch();
     },
     restoreItems() {},
   },

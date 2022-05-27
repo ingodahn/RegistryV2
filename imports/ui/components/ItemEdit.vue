@@ -1,35 +1,37 @@
 <template>
-  <v-form class="mx-auto my-12">
+<v-row>
+  <v-col>
+  <v-form class="my-12">
     <v-text-field
       v-model="currentItem.Title"
-      label="Title"
+      label="Titel"
       required
     ></v-text-field>
     <v-textarea
       v-model="currentItem.Description"
-      label="Description"
+      label="Beschreibung"
     ></v-textarea>
     <v-text-field v-model="currentItem.URL" label="URL" required></v-text-field>
     <div v-if="currentItem.itemType == 'scripts'">
       <v-text-field
         v-model="currentItem.author"
-        label="Author(s)"
+        label="Autor(en)"
       ></v-text-field>
       <v-select
         v-model="currentItem.language"
-        label="Language"
+        label="Sprache"
         :items="languages"
         required
       ></v-select>
     </div>
     <div v-if="currentItem.itemType == 'sagecell'">
       <v-textarea
-        label="Documentation"
+        label="Dokumentation"
         v-model="currentItem.documentation"
       ></v-textarea>
       <v-select
         v-model="currentItem.language"
-        label="Language"
+        label="Sprache"
         :items="languages"
         required
       ></v-select>
@@ -37,13 +39,13 @@
     <div v-if="currentItem.itemType == 'mathcoach'">
       <v-select
         v-model="currentItem.lti"
-        label="LTI-Support"
+        label="LTI-Unterstützung"
         :items="['no', 'yes']"
         required
       ></v-select>
     </div>
     <v-text-field
-      label="License"
+      label="Lizenz"
       v-model="currentItem.license"
       required
     ></v-text-field>
@@ -54,31 +56,32 @@
       required
     ></v-select>
     <v-select
+      v-if="userName == 'admin'"
       v-model="currentItem.owner"
-      label="Owner"
-      :items="users"
+      label="Eintrag von"
+      :items="authorNames"
       required
     ></v-select>
 
     <v-btn color="primary" @click="session.mode = 'search'">Zurück</v-btn>
     <v-btn color="primary" @click="saveItem">Speichern</v-btn>
-    <v-btn v-if="currentItem._id" color="error" @click="deleteItem">Löschen</v-btn>
+    <v-btn v-if="currentItem._id" color="error" @click="deleteItem"
+      >Löschen</v-btn
+    >
   </v-form>
+  </v-col>
+</v-row>
 </template>
 
 <script>
 import { Items } from "../../api/collections/ItemsCollection";
+import { Meteor } from "meteor/meteor";
 export default {
   data() {
     return {
       session: this.$root.$data.session,
       languages: ["de", "en", "es", "fr", "it", "ja", "ko", "pt", "ru", "zh"],
       statuses: ["public", "private", "deprecated"],
-      users: [
-        { text: "Ingo Dahn", value: "6mYpk6vXoocKmmwxH" },
-        { text: "MathCoach-Team", value: "RnawNjw4T2eYaFcAi" },
-        { text: "Wigand Rathmann", value: "yhc4GHyXccvf5g3E9" },
-      ],
     };
   },
   props: {
@@ -90,6 +93,7 @@ export default {
   methods: {
     saveItem() {
       this.currentItem.last_modified = new Date();
+      if (!this.currentItem.owner) this.currentItem.owner = this.userName
       if (this.currentItem._id) Meteor.call("updateItem", this.currentItem);
       else {
         this.currentItem._id = Meteor.call("insertItem", this.currentItem);
@@ -105,16 +109,8 @@ export default {
   },
   computed: {
     getOwner() {
-      switch (this.currentItem.owner) {
-        case "6mYpk6vXoocKmmwxH":
-          return "Ingo Dahn";
-        case "RnawNjw4T2eYaFcAi":
-          return "MathCoach-Team";
-        case "yhc4GHyXccvf5g3E9":
-          return "Wigand Rathmann";
-        default:
-          return "Unbekannt";
-      }
+      let owner = this.currentItem.owner;
+      return this.userNames[owner] ? this.userNames[owner] : "Unbekannt";
     },
     getType() {
       switch (this.currentItem.itemType) {
@@ -139,6 +135,30 @@ export default {
         default:
           return "Unbekannt";
       }
+    },
+    userNames() {
+      let un = {};
+      Meteor.users
+        .find({})
+        .fetch()
+        .forEach((element) => {
+          un[element.username] = element.name;
+        });
+      return un;
+    },
+    authorNames() {
+      an = [];
+      Meteor.users
+        .find({})
+        .fetch()
+        .forEach((element) => {
+          if (element.username != "admin")
+            an.push({ text: element.name, value: element.username });
+        });
+      return an;
+    },
+    userName: function () {
+      return Meteor.user() ? Meteor.user().username : null;
     },
   },
 };

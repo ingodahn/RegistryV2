@@ -2,7 +2,7 @@
   <div>
     <v-form v-if="somethingFound">
       <v-row>
-        <v-col >
+        <v-col>
           <v-list three-line>
             <v-list-item-group>
               <v-list-item
@@ -21,7 +21,8 @@
                     <v-list-item-title v-text="item.Title"></v-list-item-title>
                   </a>
                   <v-list-item-subtitle
-                    v-text="item.Description" :class="item.Status"
+                    v-text="item.Description"
+                    :class="item.Status"
                   ></v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
@@ -36,6 +37,7 @@
 
 <script>
 import { Items } from "../../api/collections/ItemsCollection";
+import { Meteor } from "meteor/meteor";
 export default {
   data() {
     return {
@@ -49,7 +51,7 @@ export default {
       if (searchType == "allTypes" && searchTerm.length < 3) {
         return [];
       }
-      
+
       let pattern = {
         $or: [
           { Title: { $regex: searchTerm, $options: "i" } },
@@ -57,7 +59,7 @@ export default {
         ],
       };
       if (searchType != "allTypes") pattern.itemType = searchType;
-      return Items.find(pattern, {sort: {last_modified: -1}}).fetch();
+      return Items.find(pattern, { sort: { last_modified: -1 } }).fetch();
     },
     somethingFound() {
       return this.itemsFound.length > 0;
@@ -81,28 +83,20 @@ export default {
       }
     },
     showItemDetails(item) {
-      if (Meteor.userId == item.userId || this.isAdmin) {
+      if (this.userName == item.owner || this.isAdmin) {
         this.session.mode = "itemEdit";
-        this.session.currentItem = item;
       } else {
         this.session.mode = "itemDetail";
-        this.session.currentItem = item;
       }
+      this.session.currentItem = item;
     },
   },
   computed: {
-    isAdmin: function() {
-        if (! Meteor.userId()) {
-            return false;
-        }
-        let user=Meteor.users.findOne({_id: Meteor.userId()});
-        if (! user) {
-            return false;
-        }
-        if (user.username == 'admin') {
-            return true;
-        }
-        return false;
+    isAdmin: function () {
+      return this.userName == "admin";
+    },
+    userName: function () {
+      return Meteor.user() ? Meteor.user().username : null;
     },
   },
 };
