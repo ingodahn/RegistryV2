@@ -96,10 +96,10 @@ export default {
   data() {
     return {
       session: this.$root.$data.session,
-      languages: ["de", "en", "es", "fr", "it", "ja", "ko", "pt", "ru", "zh"],
-      statuses: ["public", "private", "deprecated"],
-      jupyterFormats: ["ipynb","website","cocalc","binder","other"],
-      jupyterKernels: ["python","sagemath","octave","maxima"]
+      languages: [{text: "Deutsch", value: "de"}, {text: "Englisch", value: "en"}, {text: "Spanisch", value: "es"}, {text: "Französisch", value: "fr"}, {text: "Italienisch", value: "it"}],
+      statuses: [{text: "Öffentlich", value: "public"}, {text: "Privat", value: "private"}, {text: "Veraltet", value: "deprecated"}],
+      jupyterFormats: [{text: "ipynb-Datei", value: "ipynb"}, {text: "Website", value: "website"},{text: "CoCalc", value: "cocalc"}, {text: "Binder", value: "binder"},{text: "Anderes Format", value: "other"}],
+      jupyterKernels: [{text: "Python", value: "python"},{text: "SageMath", value: "sagemath"},{text: "Octave", value: "octave"}, {text: "Maxima", value: "maxima"}]
     };
   },
   props: {
