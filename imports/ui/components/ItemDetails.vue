@@ -12,6 +12,13 @@
           <p><b>Autor(en):</b> {{ currentItem.author }}</p>
           <p><b>Sprache:</b> {{ currentItem.language }}</p>
       </div>
+      <div v-if="currentItem.itemType == 'jupyter'">
+          <p><b>Dokumentation:</b></p>
+           <p><pre>{{ currentItem.format }}</pre></p>
+            <p><pre>{{ currentItem.kernel }}</pre></p>
+              <p><pre>{{ currentItem.documentation }}</pre></p>
+              <p><b>Sprache:</b> {{ currentItem.language }}</p>
+      </div>
       <div v-if="currentItem.itemType == 'sagecell'">
           <p><b>Dokumentation:</b></p>
               <p><pre>{{ currentItem.documentation }}</pre></p>
@@ -61,6 +68,8 @@ export default {
       switch (this.currentItem.itemType) {
         case "scripts":
           return "Skript";
+        case "jupyter":
+          return "Notebook";
         case "sagecell":
           return "Arbeitsblatt";
         case "mathcoach":

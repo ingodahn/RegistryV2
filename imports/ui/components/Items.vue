@@ -72,6 +72,9 @@ export default {
         case "scripts":
           return base + "scripts.png";
           break;
+        case "jupyter":
+          return base + "jupyter.png";
+          break;
         case "sagecell":
           return base + "sagecell.png";
           break;

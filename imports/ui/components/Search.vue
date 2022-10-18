@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       session: this.$root.$data.session,
-      types: [{text: "... allen Materialien", value: "allTypes"}, {text: "... Skripten", value: "scripts"}, {text: "... Arbeitsblättern", value: "sagecell"}, {text: "... Aufgaben", value: "mathcoach"}]
+      types: [{text: "... allen Materialien", value: "allTypes"}, {text: "... Skripten", value: "scripts"}, {text: "... Notebooks", value: "jupyter"}, {text: "... Arbeitsblättern", value: "sagecell"}, {text: "... Aufgaben", value: "mathcoach"}]
     }
   },
   methods: {

@@ -6,7 +6,7 @@ Meteor.methods({
         if (!this.userId) {
             throw new Meteor.Error('Insert not authorized');
         }
-        const pattern = Match.ObjectIncluding({ itemType: Match.OneOf("scripts", "sagecell", "mathcoach") });
+        const pattern = Match.ObjectIncluding({ itemType: Match.OneOf("scripts", "jupyter", "sagecell", "mathcoach") });
         var myTest = Match.test(item, pattern);
         if (myTest) {
             var newId = Items.insert(item);
@@ -21,7 +21,7 @@ Meteor.methods({
         }
         const pattern = Match.ObjectIncluding({
             _id: String,
-            itemType: Match.OneOf("scripts", "sagecell", "mathcoach")
+            itemType: Match.OneOf("scripts", "jupyter", "sagecell", "mathcoach")
         });
         var myTest = Match.test(item, pattern);
         if (myTest) {

@@ -106,6 +106,11 @@ export default {
           this.session.currentItem.language = "de";
           break;
         }
+        case "jupyter": {
+          this.session.currentItem.documentation = "";
+          this.session.currentItem.language = "de";
+          break;
+        }
         case "sagecell": {
           this.session.currentItem.documentation = "";
           this.session.currentItem.language = "de";

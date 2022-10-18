@@ -24,6 +24,22 @@
         required
       ></v-select>
     </div>
+    <div v-if="currentItem.itemType == 'jupyter'">
+      <v-select v-model="currentItem.format" label="Format" :items="jupyterFormats">
+      </v-select>
+      <v-select v-model="currentItem.kernel" label="Kernel" :items="jupyterKernels">
+      </v-select>
+      <v-textarea
+        label="Dokumentation"
+        v-model="currentItem.documentation"
+      ></v-textarea>
+      <v-select
+        v-model="currentItem.language"
+        label="Sprache"
+        :items="languages"
+        required
+      ></v-select>
+    </div>
     <div v-if="currentItem.itemType == 'sagecell'">
       <v-textarea
         label="Dokumentation"
@@ -82,6 +98,8 @@ export default {
       session: this.$root.$data.session,
       languages: ["de", "en", "es", "fr", "it", "ja", "ko", "pt", "ru", "zh"],
       statuses: ["public", "private", "deprecated"],
+      jupyterFormats: ["ipynb","website","cocalc","binder","other"],
+      jupyterKernels: ["python","sagemath","octave","maxima"]
     };
   },
   props: {
@@ -116,6 +134,8 @@ export default {
       switch (this.currentItem.itemType) {
         case "scripts":
           return "Skript";
+        case "jupyter":
+          return "Notebook";
         case "sagecell":
           return "Arbeitsblatt";
         case "mathcoach":
