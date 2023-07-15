@@ -1,0 +1,4 @@
+To deploy set up .deploy for mup.
+Go to RegistryV2/.deploy
+Run: mup deploy
+
